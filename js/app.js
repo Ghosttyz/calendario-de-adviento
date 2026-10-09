@@ -1,6 +1,7 @@
 import { arte, ICONOS, murcielagoSVG } from './personajes.js';
 import * as avisos from './avisos.js';
 import { reproducirIntro } from './intro.js';
+import { prepararInstalacion } from './instalar.js';
 
 const introTerminada = reproducirIntro();
 
@@ -529,7 +530,7 @@ sincronizarHora().then(() => {
   actualizarCabecera();
 });
 avisos.registrarServiceWorker();
-avisos.prepararInstalacion(document.getElementById('boton-instalar'));
+prepararInstalacion({ botonCabecera: document.getElementById('boton-instalar'), introTerminada });
 
 const diaEnlace = Number(parametros.get('abrir'));
 if (diaEnlace) {

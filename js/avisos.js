@@ -147,22 +147,3 @@ function plegar(linea) {
   partes.push(actual);
   return partes.join('\r\n ');
 }
-
-// ---------- Instalar como app ----------
-
-export function prepararInstalacion(boton) {
-  let eventoInstalar = null;
-  window.addEventListener('beforeinstallprompt', (evento) => {
-    evento.preventDefault();
-    eventoInstalar = evento;
-    boton.hidden = false;
-  });
-  boton.addEventListener('click', async () => {
-    if (!eventoInstalar) return;
-    eventoInstalar.prompt();
-    await eventoInstalar.userChoice;
-    eventoInstalar = null;
-    boton.hidden = true;
-  });
-  window.addEventListener('appinstalled', () => { boton.hidden = true; });
-}
