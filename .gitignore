@@ -1,0 +1,6 @@
+# Textos legibles del calendario: se quedan solo en este computador.
+# En GitHub va la versión cifrada (js/dias.js), generada con herramientas/cifrar-textos.ps1.
+contenido/
+
+# Configuración local de Claude
+.claude/

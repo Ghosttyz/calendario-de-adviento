@@ -1,0 +1,403 @@
+/* Colores por personaje para el panel y la revelación */
+
+[data-tema="scream"] { --acento: #e8e6f0; --interior-1: #454556; --interior-2: #060608; }
+[data-tema="jack"] { --acento: #b89cff; --interior-1: #6c4fb8; --interior-2: #120822; }
+[data-tema="jason"] { --acento: #ff4d4d; --interior-1: #2f6a5d; --interior-2: #04100c; }
+[data-tema="freddy"] { --acento: #ffb347; --interior-1: #c2551b; --interior-2: #1a0508; }
+[data-tema="final"] { --acento: #ff7a1a; --interior-1: #7a2e0a; --interior-2: #0d0500; }
+
+/* ---------- Panel del día ---------- */
+
+.panel {
+  --acento: var(--calabaza);
+  width: min(94vw, 560px);
+  max-height: min(92vh, 900px);
+  max-height: min(92dvh, 900px);
+  padding: 0 0 22px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #1c1030 0%, #100a1c 100%);
+  color: var(--texto);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .7), 0 0 70px -12px var(--acento);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.panel::backdrop {
+  background: rgba(5, 2, 10, .8);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.panel[open] { animation: panel-entrar .65s cubic-bezier(.2, 1.3, .4, 1); }
+.panel[open]::backdrop { animation: fundido .4s ease-out; }
+.panel--cerrando { animation: panel-salir .28s ease-in forwards !important; }
+
+@keyframes panel-entrar {
+  from { opacity: 0; transform: translateY(50px) scale(.8); }
+}
+
+@keyframes panel-salir {
+  to { opacity: 0; transform: translateY(24px) scale(.92); }
+}
+
+@keyframes fundido {
+  from { opacity: 0; }
+}
+
+.panel__cerrar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .5);
+  color: var(--texto);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.panel__cerrar:focus-visible { outline: 3px solid var(--veneno); outline-offset: 2px; }
+
+.panel__arte {
+  height: clamp(170px, 32vh, 260px);
+  padding: 12px 0 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, var(--interior-1), var(--interior-2) 72%);
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.panel__arte svg { display: block; width: 100%; height: 100%; }
+
+.panel__fecha {
+  margin: 18px 22px 0;
+  color: var(--acento);
+  font-size: .8rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.panel__titulo {
+  margin: 4px 22px 14px;
+  font-family: var(--fuente-terror);
+  font-weight: 400;
+  font-size: clamp(2rem, 7vw, 2.7rem);
+  line-height: 1.05;
+  color: var(--hueso);
+  text-shadow: 0 0 14px var(--acento);
+}
+
+.carta {
+  position: relative;
+  margin: 0 18px;
+  padding: 22px 22px 20px;
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, .4), transparent 42%),
+    radial-gradient(circle at 92% 94%, rgba(120, 70, 20, .28), transparent 45%),
+    #efe3c4;
+  color: #2b1d12;
+  font-family: var(--fuente-carta);
+  font-size: 1.14rem;
+  line-height: 1.55;
+  box-shadow: inset 0 0 42px rgba(110, 60, 10, .45), 0 10px 24px rgba(0, 0, 0, .45);
+  animation: desenrollar .85s .2s cubic-bezier(.2, .9, .3, 1) both;
+}
+
+.carta p { margin: 0 0 .8em; }
+.carta p:last-child { margin-bottom: 0; }
+
+@keyframes desenrollar {
+  from { clip-path: inset(0 0 100% 0); opacity: .4; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+.panel__extra {
+  margin: 14px 18px 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .05);
+  font-size: 1.04rem;
+  animation: aparecer .5s .75s both;
+}
+
+.panel__extra:empty { display: none; }
+
+.panel__extra strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--acento);
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.panel__extra--reto {
+  border-color: var(--acento);
+  animation-delay: .9s;
+}
+
+.panel__extra--pareja {
+  border-color: #ff7eb6;
+  background: rgba(255, 126, 182, .08);
+  animation-delay: 1.05s;
+}
+
+.panel__extra--pareja strong { color: #ff9cc8; }
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+.panel__boton { display: block; margin: 18px auto 0; }
+
+/* ---------- Panel de avisos ---------- */
+
+.panel--avisos { padding: 26px 0 22px; }
+
+.avisos__intro { margin: 0 22px 6px; color: var(--texto-suave); }
+
+.avisos__opcion {
+  margin: 14px 18px 0;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .05);
+}
+
+.avisos__opcion h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.avisos__opcion p { margin: 0 0 12px; color: var(--texto-suave); font-size: .95rem; }
+.avisos__botones { display: flex; flex-wrap: wrap; gap: 10px; }
+.avisos__nota { margin: 12px 0 0 !important; font-size: .88rem !important; }
+
+.avisos__hora {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.avisos__hora input {
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .35);
+  color: var(--texto);
+  font: inherit;
+  color-scheme: dark;
+}
+
+.estado-ok { color: var(--veneno) !important; }
+.estado-mal { color: #ff9a9a !important; }
+
+/* ---------- Relámpago y revelación ---------- */
+
+.relampago {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: #e9e4ff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.relampago--activo { animation: relampago .7s ease-out; }
+
+@keyframes relampago {
+  0% { opacity: 0; }
+  8% { opacity: .7; }
+  16% { opacity: .08; }
+  26% { opacity: .45; }
+  100% { opacity: 0; }
+}
+
+.revelacion {
+  --acento: var(--calabaza);
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, rgba(28, 10, 40, .8), rgba(3, 1, 6, .97) 70%);
+  animation: fundido .3s ease-out;
+}
+
+.revelacion[hidden] { display: none; }
+.revelacion--saliendo { animation: fundido-salir .45s ease-in forwards; }
+
+@keyframes fundido-salir {
+  to { opacity: 0; }
+}
+
+.revelacion__arte {
+  position: relative;
+  z-index: 2;
+  width: min(72vw, 58vh, 420px);
+  aspect-ratio: 1;
+  animation: surgir 1.3s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+
+.revelacion[data-tema="final"] .revelacion__arte { width: min(94vw, 900px); aspect-ratio: 520 / 200; }
+.revelacion__arte svg { display: block; width: 100%; height: 100%; }
+
+@keyframes surgir {
+  from { opacity: 0; transform: scale(.3) rotate(-8deg); filter: blur(10px); }
+  60% { opacity: 1; filter: blur(0); }
+}
+
+.revelacion__texto {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12vh;
+  z-index: 3;
+  margin: 0;
+  padding: 0 16px;
+  font-family: var(--fuente-terror);
+  font-size: clamp(2rem, 8vw, 4rem);
+  text-align: center;
+  color: var(--hueso);
+  text-shadow: 0 0 22px var(--acento);
+  animation: temblor .12s infinite;
+}
+
+@keyframes temblor {
+  50% { transform: translate(1px, -1px); }
+}
+
+/* Scream: ondas de teléfono */
+.efecto-ondas i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40vmin;
+  height: 40vmin;
+  margin: -20vmin 0 0 -20vmin;
+  border: 3px solid rgba(232, 230, 240, .7);
+  border-radius: 50%;
+  animation: onda 1.4s ease-out infinite;
+}
+
+.efecto-ondas i:nth-child(2) { animation-delay: .45s; }
+.efecto-ondas i:nth-child(3) { animation-delay: .9s; }
+
+@keyframes onda {
+  from { transform: scale(.3); opacity: 1; }
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+/* Jack y final: murciélagos que salen volando */
+.efecto-murcielagos i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 54px;
+  margin: -14px 0 0 -27px;
+  fill: #0b0612;
+  filter: drop-shadow(0 0 6px rgba(184, 156, 255, .6));
+  transform: rotate(var(--a)) translateY(0) scale(.4);
+  animation: estallar 1.5s cubic-bezier(.2, .7, .4, 1) var(--r, 0s) both;
+}
+
+.efecto-murcielagos i svg { display: block; width: 100%; overflow: visible; }
+
+@keyframes estallar {
+  from { opacity: 1; }
+  to { transform: rotate(var(--a)) translateY(-70vmax) scale(1.5); opacity: 0; }
+}
+
+.efecto-luna {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70vmin;
+  height: 70vmin;
+  margin: -35vmin 0 0 -35vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246, 241, 213, .55), rgba(246, 241, 213, .08) 60%, transparent 70%);
+  animation: crecer 1.6s ease-out both;
+}
+
+@keyframes crecer {
+  from { transform: scale(.2); opacity: 0; }
+}
+
+/* Jason: niebla que sube y brillo rojo */
+.efecto-niebla {
+  position: absolute;
+  inset: auto -20% -10% -20%;
+  height: 70%;
+  background:
+    radial-gradient(closest-side at 25% 70%, rgba(210, 225, 220, .35), transparent),
+    radial-gradient(closest-side at 70% 80%, rgba(210, 225, 220, .3), transparent),
+    radial-gradient(closest-side at 50% 100%, rgba(210, 225, 220, .4), transparent);
+  animation: subir-niebla 1.8s ease-out both;
+}
+
+@keyframes subir-niebla {
+  from { transform: translateY(60%); opacity: 0; }
+}
+
+.efecto-brillo {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(193, 18, 31, .45), transparent 55%);
+  animation: latido 1s ease-in-out infinite;
+}
+
+@keyframes latido {
+  50% { opacity: .35; }
+}
+
+/* Freddy: zarpazos que rasgan la pantalla */
+.efecto-zarpazo {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.efecto-zarpazo path {
+  fill: none;
+  stroke: #fff4e0;
+  stroke-width: .9;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 1.5px #ff5a1f);
+  animation: rasgar .45s cubic-bezier(.6, 0, .4, 1) forwards, desvanecer .6s 1.3s forwards;
+}
+
+.efecto-zarpazo path:nth-child(2) { animation-delay: .05s, 1.3s; }
+.efecto-zarpazo path:nth-child(3) { animation-delay: .1s, 1.3s; }
+.efecto-zarpazo path:nth-child(4) { animation-delay: .15s, 1.3s; }
+
+@keyframes rasgar {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes desvanecer {
+  to { opacity: 0; }
+}
+
+.efecto-fuego {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 70%, rgba(255, 110, 20, .45), rgba(120, 10, 20, .25) 40%, transparent 70%);
+  animation: latido 1.2s ease-in-out infinite;
+}
+
+[data-movimiento="suave"] .relampago--activo,
+[data-movimiento="suave"] .carta,
+[data-movimiento="suave"] .panel__extra {
+  animation: none;
+}
+
+[data-movimiento="suave"] .panel[open] { animation: fundido .3s ease-out; }

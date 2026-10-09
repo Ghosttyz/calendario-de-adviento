@@ -1,0 +1,182 @@
+/* Animaciones de las ilustraciones de js/personajes.js */
+
+.arte { overflow: visible; }
+
+/* Solo las piezas animadas giran sobre su propia caja; el resto conserva
+   los transform="rotate(...)" de los dibujos tal cual. */
+.gf-cabeza, .gf-boca, .gf-telefono,
+.jk-cabeza, .jk-ojos, .jk-ala--izq, .jk-ala--der, .jk-luna, .jk-murcielago,
+.js-mascara, .js-brillo, .js-niebla, .js-machete,
+.fr-cabeza, .fr-guante, .fr-chispas, .fr-sombrero, .fr-fuego,
+.cal-halo, .fin-pieza, .ala {
+  transform-box: fill-box;
+}
+
+.ala { animation: aletear .24s ease-in-out infinite alternate; }
+
+.ala--izq { transform-origin: 100% 40%; }
+.ala--der { transform-origin: 0% 40%; }
+
+@keyframes latido-arte {
+  50% { opacity: .55; transform: scale(.96); }
+}
+
+/* Ghostface: inclina la cabeza, grita y le suena el teléfono */
+
+.gf-cabeza { transform-origin: 50% 95%; animation: gf-inclinar 4.5s ease-in-out infinite; }
+.gf-boca { transform-origin: 50% 20%; animation: gf-grito 2.6s ease-in-out infinite; }
+.gf-telefono { transform-origin: 50% 80%; animation: gf-vibrar 2.2s linear infinite; }
+.gf-onda { opacity: 0; animation: gf-onda 2.2s ease-out infinite; }
+.gf-onda--2 { animation-delay: .15s; }
+
+@keyframes gf-inclinar {
+  0%, 100% { transform: rotate(0); }
+  25%, 40% { transform: rotate(-11deg); }
+  60% { transform: rotate(4deg); }
+  75% { transform: rotate(-2deg); }
+}
+
+@keyframes gf-grito {
+  50% { transform: scale(.92, 1.2); }
+}
+
+@keyframes gf-vibrar {
+  0%, 60%, 100% { transform: rotate(0); }
+  62%, 70%, 78% { transform: rotate(-6deg); }
+  66%, 74%, 82% { transform: rotate(6deg); }
+}
+
+@keyframes gf-onda {
+  0%, 58% { opacity: 0; }
+  64%, 84% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Jack: mueve la cabeza, entrecierra los ojos y aletea el corbatín */
+
+.jk-cabeza { transform-origin: 50% 100%; animation: jk-cabeza 3.4s ease-in-out infinite; }
+.jk-ojos { transform-origin: 50% 50%; animation: jk-ojos 5s ease-in-out infinite; }
+.jk-ala--izq { transform-origin: 100% 50%; animation: jk-ala .5s ease-in-out infinite alternate; }
+.jk-ala--der { transform-origin: 0% 50%; animation: jk-ala .5s ease-in-out infinite alternate; }
+.jk-luna { transform-origin: 50% 50%; animation: jk-luna 6s ease-in-out infinite; }
+.jk-murcielago { animation: jk-vuelo 3s ease-in-out infinite; }
+.jk-murcielago--2 { animation-duration: 3.8s; animation-delay: -1.2s; }
+
+@keyframes jk-cabeza {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg) translateY(-3px); }
+}
+
+@keyframes jk-ojos {
+  0%, 86%, 100% { transform: scaleY(1); }
+  90% { transform: scaleY(.65); }
+  94% { transform: scaleY(1.06); }
+}
+
+@keyframes jk-ala {
+  to { transform: scaleY(.5); }
+}
+
+@keyframes jk-luna {
+  50% { opacity: .82; transform: scale(1.03); }
+}
+
+@keyframes jk-vuelo {
+  50% { transform: translate(8px, -6px); }
+}
+
+/* Jason: la máscara se acerca, los ojos brillan y el machete destella */
+
+.js-mascara { transform-origin: 50% 50%; animation: js-acercarse 5s ease-in-out infinite; }
+.js-pupila { opacity: 0; animation: js-mirada 4s ease-in-out infinite; }
+.js-destello { opacity: 0; animation: js-destello 3.6s ease-in-out infinite; }
+.js-brillo { transform-origin: 50% 50%; animation: latido-arte 2.4s ease-in-out infinite; }
+.js-niebla { animation: js-niebla 7s ease-in-out infinite alternate; }
+.js-machete { transform-origin: 50% 90%; animation: js-machete 5s ease-in-out infinite; }
+
+@keyframes js-acercarse {
+  0%, 100% { transform: scale(.97) translateY(2px); }
+  50% { transform: scale(1.03) translateY(-2px); }
+}
+
+@keyframes js-mirada {
+  0%, 55%, 100% { opacity: 0; }
+  62%, 80% { opacity: 1; }
+}
+
+@keyframes js-destello {
+  0%, 70%, 100% { opacity: 0; }
+  78% { opacity: .9; }
+  86% { opacity: 0; }
+}
+
+@keyframes js-niebla {
+  to { transform: translateX(14px); }
+}
+
+@keyframes js-machete {
+  50% { transform: rotate(-4deg); }
+}
+
+/* Freddy: rasguña con el guante, le brillan los ojos y se acomoda el sombrero */
+
+.fr-cabeza { transform-origin: 50% 100%; animation: fr-cabeza 4s ease-in-out infinite; }
+.fr-guante { transform-origin: 40% 100%; animation: fr-rasguno 1.8s ease-in-out infinite; }
+.fr-chispas { opacity: 0; animation: fr-chispas 1.8s ease-out infinite; }
+.fr-ojo { animation: fr-ojo 3s infinite; }
+.fr-sombrero { transform-origin: 30% 100%; animation: fr-sombrero 6s ease-in-out infinite; }
+.fr-fuego { transform-origin: 50% 50%; animation: latido-arte 1.6s ease-in-out infinite; }
+
+@keyframes fr-cabeza {
+  50% { transform: rotate(-3deg); }
+}
+
+@keyframes fr-rasguno {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-14deg); }
+  35% { transform: rotate(6deg); }
+  50% { transform: rotate(-6deg); }
+}
+
+@keyframes fr-chispas {
+  0%, 28% { opacity: 0; transform: translateY(0); }
+  34% { opacity: 1; }
+  60%, 100% { opacity: 0; transform: translateY(-10px); }
+}
+
+@keyframes fr-ojo {
+  0%, 48%, 52%, 100% { opacity: 1; }
+  50% { opacity: .2; }
+  70% { opacity: .7; }
+}
+
+@keyframes fr-sombrero {
+  0%, 70%, 86%, 100% { transform: rotate(0); }
+  78% { transform: rotate(-5deg) translateY(-2px); }
+}
+
+/* Calabaza y final */
+
+.cal-luz { animation: cal-vela 2.2s infinite; }
+.cal-halo { transform-origin: 50% 50%; animation: latido-arte 2.2s ease-in-out infinite; }
+
+@keyframes cal-vela {
+  0%, 100% { opacity: 1; }
+  20% { opacity: .7; }
+  22% { opacity: .95; }
+  70% { opacity: .8; }
+}
+
+.fin-pieza { transform-origin: 50% 100%; animation: fin-salto 2.4s ease-in-out infinite; }
+.fin-pieza--2 { animation-delay: .3s; }
+.fin-pieza--3 { animation-delay: .6s; }
+.fin-pieza--4 { animation-delay: .9s; }
+.fin-pieza--5 { animation-delay: 1.2s; }
+
+@keyframes fin-salto {
+  0%, 40%, 100% { transform: translateY(0); }
+  20% { transform: translateY(-8px); }
+}
+
+/* Detrás de una puerta cerrada no hace falta animar nada */
+.puerta:not(.puerta--abierta) .puerta__interior * { animation-play-state: paused; }

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>31 Noches de Terror</title>
+  <meta name="description" content="Calendario de adviento de Halloween: una puerta para cada noche de octubre.">
+  <meta name="theme-color" content="#0d0716">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="iconos/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="31 Noches">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Las fuentes se cargan sin bloquear: con mala conexión el calendario funciona igual y la fuente llega después. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Griffy&family=Mystery+Quest&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="css/personajes.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <script>
+    // Efectos "suaves" si el sistema pide reducir el movimiento, salvo que se haya elegido otra cosa.
+    (function () {
+      var sistema = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'suave' : 'completo';
+      var elegido = null;
+      try { elegido = localStorage.getItem('noches-terror:efectos'); } catch (e) {}
+      var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+      var prueba = local && new URLSearchParams(location.search).get('efectos');
+      document.documentElement.dataset.movimiento = prueba || elegido || sistema;
+    })();
+  </script>
+</head>
+<body>
+  <div class="intro" id="intro">
+    <div class="intro__escenario" aria-hidden="true">
+      <div class="intro__camara">
+        <div class="intro__zoom">
+          <svg class="intro__bosque" viewBox="0 0 1000 600" width="1000" height="600">
+            <defs>
+              <linearGradient id="intro-cielo" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#060a14"/><stop offset=".55" stop-color="#132538"/><stop offset="1" stop-color="#22404a"/>
+              </linearGradient>
+              <radialGradient id="intro-luna" cx="45%" cy="40%" r="60%">
+                <stop offset="0" stop-color="#fffbe6"/><stop offset=".7" stop-color="#f3e6ac"/><stop offset="1" stop-color="#dccb84"/>
+              </radialGradient>
+              <radialGradient id="intro-halo">
+                <stop offset="0" stop-color="#f6f1d5" stop-opacity=".35"/><stop offset="1" stop-color="#f6f1d5" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="intro-hueco" cx="50%" cy="55%" r="60%">
+                <stop offset="0" stop-color="#fff2c4"/><stop offset=".45" stop-color="#ffb347"/><stop offset="1" stop-color="#d1500c"/>
+              </radialGradient>
+              <linearGradient id="intro-tronco" x1="0" x2="1">
+                <stop offset="0" stop-color="#07090d"/><stop offset=".5" stop-color="#151b24"/><stop offset="1" stop-color="#07090d"/>
+              </linearGradient>
+            </defs>
+            <rect width="1000" height="600" fill="url(#intro-cielo)"/>
+            <g fill="#fff" opacity=".75">
+              <circle cx="60" cy="50" r="1.6"/><circle cx="140" cy="90" r="1.2"/><circle cx="230" cy="40" r="1.8"/><circle cx="300" cy="110" r="1.3"/>
+              <circle cx="360" cy="60" r="1.5"/><circle cx="650" cy="70" r="1.4"/><circle cx="700" cy="36" r="1.8"/><circle cx="760" cy="100" r="1.2"/>
+              <circle cx="840" cy="60" r="1.6"/><circle cx="930" cy="90" r="1.3"/><circle cx="120" cy="160" r="1.2"/><circle cx="880" cy="170" r="1.4"/>
+            </g>
+            <circle cx="500" cy="150" r="200" fill="url(#intro-halo)"/>
+            <circle cx="500" cy="150" r="110" fill="url(#intro-luna)"/>
+            <ellipse cx="250" cy="472" rx="320" ry="40" fill="#9fb6c4" opacity=".12"/>
+            <ellipse cx="760" cy="482" rx="300" ry="36" fill="#9fb6c4" opacity=".12"/>
+            <g id="intro-arboles" fill="#05080d" stroke="#05080d" stroke-linecap="round">
+              <path stroke="none" d="M96 600C110 480 88 380 128 300C148 260 140 222 118 190L132 184C158 220 168 262 148 308C118 382 138 480 146 600Z"/>
+              <path fill="none" stroke-width="9" d="M130 300C90 282 60 244 70 204C76 180 102 178 102 198C102 210 90 212 88 202"/>
+              <path fill="none" stroke-width="7" d="M142 248C182 222 210 186 200 154C194 136 174 138 178 154"/>
+              <path fill="none" stroke-width="5" d="M124 196C110 160 116 130 136 116C150 108 160 122 150 130"/>
+              <path stroke="none" d="M0 600V330C20 300 36 260 30 220L44 222C52 266 40 306 22 340C14 380 20 480 26 600Z"/>
+              <path fill="none" stroke-width="6" d="M30 260C60 240 84 210 80 182C77 164 58 166 62 182"/>
+              <path stroke="none" d="M228 600C236 540 226 500 244 460C254 438 250 418 240 400L250 396C264 416 268 440 258 464C246 494 252 540 256 600Z"/>
+              <path fill="none" stroke-width="5" d="M246 450C220 430 206 404 214 384C219 372 232 374 230 386"/>
+            </g>
+            <use href="#intro-arboles" transform="translate(1000 0) scale(-1 1)"/>
+            <path d="M0 600V522C150 502 300 532 420 516C480 508 520 508 580 516C700 532 850 502 1000 522V600Z" fill="#04060a"/>
+            <path d="M330 600C380 560 400 520 405 470C410 400 400 330 420 280C430 250 425 220 410 190L425 184C445 214 455 246 470 262C480 240 482 210 476 180L492 178C500 212 500 240 506 262C522 240 540 214 560 196L572 206C556 228 566 256 580 282C600 330 590 400 595 470C600 520 620 560 670 600Z" fill="url(#intro-tronco)"/>
+            <g fill="none" stroke="#0b0f15" stroke-linecap="round">
+              <path stroke-width="10" d="M418 190C380 150 350 150 340 120C330 90 360 80 368 100C372 112 360 116 356 108"/>
+              <path stroke-width="8" d="M484 180C480 140 500 110 490 80C482 60 460 66 466 82"/>
+              <path stroke-width="10" d="M566 200C610 170 640 150 650 120C660 90 630 80 626 100C624 112 638 114 640 106"/>
+              <path stroke-width="6" d="M352 128C330 110 300 108 290 90"/>
+            </g>
+            <g transform="translate(425 322)">
+              <path d="M75 22C62 12 44 14 36 22C18 20 4 40 4 74C4 112 22 142 52 146C60 148 68 146 75 142C82 146 90 148 98 146C128 142 146 112 146 74C146 40 132 20 114 22C106 14 88 12 75 22Z" fill="url(#intro-hueco)"/>
+              <path d="M75 22C62 12 44 14 36 22C18 20 4 40 4 74C4 112 22 142 52 146C60 148 68 146 75 142C82 146 90 148 98 146C128 142 146 112 146 74C146 40 132 20 114 22C106 14 88 12 75 22Z" fill="none" stroke="#1d130c" stroke-width="5"/>
+            </g>
+          </svg>
+          <div class="intro__luz"></div>
+          <div class="intro__bisagra">
+            <div class="intro__puerta">
+              <svg viewBox="0 0 150 150">
+                <defs>
+                  <radialGradient id="intro-calabaza" cx="40%" cy="38%" r="70%">
+                    <stop offset="0" stop-color="#ffa64d"/><stop offset=".6" stop-color="#e8701e"/><stop offset="1" stop-color="#9c3d0c"/>
+                  </radialGradient>
+                </defs>
+                <path d="M70 22C68 10 72 4 82 0L86 6C80 9 78 14 79 22Z" fill="#3f5f14"/>
+                <path d="M75 22C62 12 44 14 36 22C18 20 4 40 4 74C4 112 22 142 52 146C60 148 68 146 75 142C82 146 90 148 98 146C128 142 146 112 146 74C146 40 132 20 114 22C106 14 88 12 75 22Z" fill="url(#intro-calabaza)" stroke="#5a2306" stroke-width="2"/>
+                <path d="M75 24C62 50 60 110 75 140M75 24C88 50 90 110 75 140M40 26C26 54 26 110 50 142M110 26C124 54 124 110 100 142" fill="none" stroke="#9c3d0c" stroke-width="2.5" opacity=".7"/>
+                <g class="intro__cara">
+                  <path d="M38 70L52 48L64 70ZM112 70L98 48L86 70ZM70 84L75 74L80 84Z"/>
+                  <path d="M34 96Q75 142 116 96L108 98L104 101L96 98L90 104L82 99L75 105L68 99L60 104L54 98L46 101L42 98Z"/>
+                </g>
+                <circle cx="132" cy="82" r="4.5" fill="#3b2208"/>
+              </svg>
+            </div>
+          </div>
+          <div class="intro__murcielagos" id="intro-murcielagos"></div>
+        </div>
+      </div>
+    </div>
+    <p class="intro__texto intro__texto--1">Hace mucho tiempo, en un bosque escondido…</p>
+    <p class="intro__texto intro__texto--2">…un árbol guardaba una puerta que solo se abre en octubre.</p>
+    <div class="intro__destello"></div>
+    <button class="intro__saltar" id="intro-saltar" type="button">Saltar ›</button>
+  </div>
+
+  <div class="escena" aria-hidden="true">
+    <div class="estrellas" id="estrellas"></div>
+    <div class="luna"></div>
+    <div class="murcielagos" id="murcielagos"></div>
+    <svg class="horizonte" viewBox="0 0 1440 220" preserveAspectRatio="xMidYMax slice">
+      <path class="horizonte__colina" d="M0 220 V190 C120 178 210 160 262 132 C300 112 312 88 300 70 C290 56 268 58 266 74 C264 86 280 90 286 80" />
+      <path class="horizonte__suelo" d="M0 220 V186 C90 176 180 170 250 150 C300 136 330 150 380 168 C520 190 700 178 860 184 C1020 190 1180 172 1320 180 C1380 184 1420 182 1440 180 V220 Z" />
+      <g class="horizonte__tumbas">
+        <path d="M520 190 V160 a14 14 0 0 1 28 0 V190 Z" />
+        <path d="M566 192 V150 a18 18 0 0 1 36 0 V192 Z" />
+        <path d="M618 190 V140 h6 v-14 h8 v14 h6 v8 h-6 v42 h-8 v-42 h-6 Z" />
+        <path d="M660 192 V166 a12 12 0 0 1 24 0 V192 Z" />
+      </g>
+      <path class="horizonte__arbol" d="M880 186 C884 150 880 120 868 96 M872 108 C856 96 846 92 832 94 M870 124 C890 110 904 108 920 112 M876 150 C896 140 910 128 916 110 M866 96 C862 80 866 66 876 56" />
+      <g class="horizonte__casa">
+        <path d="M1150 186 V120 L1180 88 L1210 120 V186 Z M1206 186 V104 L1246 58 L1286 104 V186 Z M1282 186 V132 L1306 110 L1330 132 V186 Z" />
+        <rect class="horizonte__ventana" x="1236" y="112" width="18" height="22" rx="2" />
+        <rect class="horizonte__ventana horizonte__ventana--2" x="1170" y="132" width="14" height="16" rx="2" />
+      </g>
+    </svg>
+    <div class="niebla niebla--1"></div>
+    <div class="niebla niebla--2"></div>
+  </div>
+
+  <header class="cabecera">
+    <p class="cabecera__antetitulo">Calendario de adviento de Halloween</p>
+    <h1 class="cabecera__titulo">31 Noches de Terror</h1>
+    <p class="cabecera__estado" id="estado"></p>
+    <p class="cabecera__cuenta" id="cuenta-regresiva"></p>
+    <div class="cabecera__acciones">
+      <button class="boton" id="boton-hoy" type="button">🎃 Ir a hoy</button>
+      <button class="boton boton--avisos" id="boton-avisos" type="button">🔔 Avisos diarios</button>
+      <button class="boton boton--secundario" id="boton-efectos" type="button" aria-pressed="true">✨ Efectos: completos</button>
+      <button class="boton boton--secundario" id="boton-instalar" type="button" hidden>📲 Instalar app</button>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <ol class="calendario" id="calendario" aria-label="Puertas de octubre"></ol>
+  </main>
+
+  <footer class="pie">
+    <p>Una puerta nueva cada noche de octubre de <span id="anio"></span>. Las puertas abiertas se guardan en este dispositivo.</p>
+  </footer>
+
+  <div class="relampago" id="relampago" aria-hidden="true"></div>
+  <div class="revelacion" id="revelacion" aria-hidden="true" hidden></div>
+
+  <dialog class="panel" id="panel" aria-labelledby="panel-titulo">
+    <button class="panel__cerrar" type="button" data-cerrar aria-label="Cerrar">✕</button>
+    <div class="panel__arte" id="panel-arte"></div>
+    <p class="panel__fecha" id="panel-fecha"></p>
+    <h2 class="panel__titulo" id="panel-titulo"></h2>
+    <article class="carta" id="panel-texto"></article>
+    <aside class="panel__extra" id="panel-dato"></aside>
+    <aside class="panel__extra panel__extra--reto" id="panel-reto"></aside>
+    <aside class="panel__extra panel__extra--pareja" id="panel-pareja"></aside>
+    <button class="boton panel__boton" type="button" data-cerrar>Cerrar la puerta</button>
+  </dialog>
+
+  <dialog class="panel panel--avisos" id="panel-avisos" aria-labelledby="avisos-titulo">
+    <button class="panel__cerrar" type="button" data-cerrar aria-label="Cerrar">✕</button>
+    <h2 class="panel__titulo" id="avisos-titulo">Avisos diarios</h2>
+    <p class="avisos__intro">Elige cómo quieres enterarte cada día de que se abrió una puerta nueva.</p>
+
+    <section class="avisos__opcion">
+      <h3>🔔 Notificaciones en este dispositivo</h3>
+      <p id="avisos-estado"></p>
+      <div class="avisos__botones">
+        <button class="boton" id="avisos-activar" type="button">Activar notificaciones</button>
+        <button class="boton boton--secundario" id="avisos-probar" type="button" hidden>Enviar una de prueba</button>
+      </div>
+      <p class="avisos__nota" id="avisos-ios" hidden>En iPhone o iPad: toca <strong>Compartir → Añadir a pantalla de inicio</strong>, abre el calendario desde ese ícono y activa las notificaciones ahí.</p>
+    </section>
+
+    <section class="avisos__opcion">
+      <h3>📅 Recordatorios en tu calendario</h3>
+      <p>Funcionan en cualquier celular, tablet o computador, aunque el calendario esté cerrado: se agregan 31 recordatorios, uno por noche.</p>
+      <label class="avisos__hora">Hora del aviso <input type="time" id="avisos-hora" value="08:00"></label>
+      <button class="boton" id="avisos-ics" type="button">Descargar recordatorios (.ics)</button>
+    </section>
+  </dialog>
+
+  <div class="aviso-flotante" id="aviso-flotante" role="status" aria-live="polite"></div>
+
+  <script src="js/dias.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
