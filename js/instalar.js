@@ -40,6 +40,8 @@ export function prepararInstalacion({ botonCabecera, introTerminada }) {
 
   function mostrar() {
     if (esAppInstalada()) return;
+    const ocupado = !document.getElementById('emergente').hidden || document.querySelector('dialog[open]');
+    if (ocupado) return;
     pintar();
     aviso.hidden = false;
   }

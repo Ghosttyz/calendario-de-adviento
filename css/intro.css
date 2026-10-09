@@ -116,16 +116,42 @@ body.con-intro { overflow: hidden; }
 
 /* ---------- Secuencia (unos 5 segundos) ---------- */
 
-.intro--activa .intro__escenario { animation: intro-aparecer .9s ease-out both; }
-.intro--activa .intro__camara { animation: intro-acercarse 3.7s ease-out both; }
-.intro--activa .intro__texto--1 { animation: intro-narrar 2.1s .5s ease-in-out both; }
-.intro--activa .intro__cara { animation: intro-encender .9s 1.9s both; }
-.intro--activa .intro__luz { animation: intro-brillar 2.4s 1.9s ease-out both; }
-.intro--activa .intro__texto--2 { animation: intro-narrar 2s 2.4s ease-in-out both; }
-.intro--activa .intro__puerta { animation: intro-abrir .9s 2.9s cubic-bezier(.4, .1, .3, 1) both; }
-.intro--activa .intro__murcielagos i { animation: intro-murcielago 1.5s calc(3.05s + var(--r, 0s)) cubic-bezier(.2, .7, .4, 1) both; }
-.intro--activa .intro__zoom { animation: intro-entrar .9s 3.7s cubic-bezier(.55, 0, .85, .35) both; }
-.intro--activa .intro__destello { animation: intro-destello .6s 4s ease-in both; }
+/* La escena aparece y espera el toque de «Toca para entrar»; ese toque arranca la secuencia y la voz. */
+.intro--lista:not(.intro--saliendo) { animation: none; }
+.intro--lista .intro__escenario { animation: intro-aparecer .9s ease-out both; }
+.intro--activa .intro__entrar { display: none; }
+.intro--activa .intro__camara { animation: intro-acercarse 5.8s ease-out both; }
+.intro--activa .intro__texto--1 { animation: intro-narrar 3s .3s ease-in-out both; }
+.intro--activa .intro__cara { animation: intro-encender .9s 2.6s both; }
+.intro--activa .intro__luz { animation: intro-brillar 3s 2.6s ease-out both; }
+.intro--activa .intro__texto--2 { animation: intro-narrar 3.2s 3.3s ease-in-out both; }
+.intro--activa .intro__puerta { animation: intro-abrir .9s 5s cubic-bezier(.4, .1, .3, 1) both; }
+.intro--activa .intro__murcielagos i { animation: intro-murcielago 1.5s calc(5.15s + var(--r, 0s)) cubic-bezier(.2, .7, .4, 1) both; }
+.intro--activa .intro__zoom { animation: intro-entrar .9s 5.8s cubic-bezier(.55, 0, .85, .35) both; }
+.intro--activa .intro__destello { animation: intro-destello .45s 6s ease-in both; }
+
+.intro__entrar {
+  position: absolute;
+  bottom: max(9vh, 40px);
+  left: 50%;
+  z-index: 2;
+  padding: 14px 28px;
+  border: 1px solid rgba(255, 210, 140, .7);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff8a2a, #c94f0a);
+  color: #1a0a00;
+  font: 400 clamp(1.3rem, 4.5vw, 1.7rem)/1 var(--fuente-terror);
+  cursor: pointer;
+  transform: translateX(-50%);
+  box-shadow: 0 0 30px rgba(255, 140, 40, .55);
+  animation: intro-llamar 1.8s ease-in-out infinite;
+}
+
+.intro__entrar:focus-visible { outline: 3px solid var(--veneno); outline-offset: 3px; }
+
+@keyframes intro-llamar {
+  50% { box-shadow: 0 0 50px 8px rgba(255, 140, 40, .7); transform: translateX(-50%) scale(1.05); }
+}
 
 @keyframes intro-aparecer { to { opacity: 1; } }
 @keyframes intro-acercarse { from { transform: scale(1); } to { transform: scale(1.12); } }
@@ -161,14 +187,15 @@ body.con-intro { overflow: hidden; }
 @keyframes intro-entrar { to { transform: scale(9); } }
 @keyframes intro-destello { to { opacity: 1; } }
 
-/* Efectos suaves: la cara se enciende y hay narración, pero sin acercamientos ni giros. */
+/* Efectos suaves: narración, cara encendida y destello final, pero sin acercamientos ni giros. */
 [data-movimiento="suave"] .intro__camara,
 [data-movimiento="suave"] .intro__zoom,
 [data-movimiento="suave"] .intro__puerta,
-[data-movimiento="suave"] .intro__destello,
-[data-movimiento="suave"] .intro__texto--2 {
+[data-movimiento="suave"] .intro__entrar {
   animation: none !important;
 }
+
+[data-movimiento="suave"] .intro--activa .intro__destello { animation: intro-destello .8s 5.6s ease-in both !important; }
 
 /* ---------- El calendario entra después de la intro ---------- */
 

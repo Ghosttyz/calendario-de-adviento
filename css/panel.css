@@ -194,6 +194,47 @@
 .estado-ok { color: var(--veneno) !important; }
 .estado-mal { color: #ff9a9a !important; }
 
+/* ---------- Puerta emergente (al llegar desde una notificación) ---------- */
+
+.emergente {
+  position: fixed;
+  inset: 0;
+  z-index: 38;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  background: radial-gradient(circle at 50% 45%, rgba(48, 20, 72, .88), rgba(4, 2, 8, .97) 70%);
+  animation: fundido .35s ease-out;
+}
+
+.emergente[hidden] { display: none; }
+
+.emergente__marco {
+  width: min(62vw, 300px);
+  aspect-ratio: 3 / 4;
+  container-type: inline-size;
+  animation: emergente-pop .75s cubic-bezier(.2, 1.5, .4, 1) both;
+}
+
+.emergente__marco--final { width: min(90vw, 620px); aspect-ratio: 16 / 9; }
+.emergente__marco .puerta { cursor: default; }
+
+.emergente__texto {
+  margin: 0;
+  font-family: var(--fuente-terror);
+  font-size: clamp(1.9rem, 7vw, 2.8rem);
+  color: var(--calabaza-clara);
+  text-shadow: 0 0 18px rgba(255, 122, 26, .6);
+  animation: aparecer .6s .35s both;
+}
+
+@keyframes emergente-pop {
+  from { opacity: 0; transform: scale(.2) rotate(-8deg); }
+}
+
+[data-movimiento="suave"] .emergente__marco { animation: fundido .4s both; }
+
 /* ---------- Panel de sonido ---------- */
 
 .sonidos { display: grid; gap: 10px; margin: 14px 18px 0; }

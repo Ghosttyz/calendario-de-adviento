@@ -4,7 +4,12 @@ import { reproducirIntro } from './intro.js';
 import { prepararInstalacion } from './instalar.js';
 import * as sonido from './sonido.js';
 
-const introTerminada = reproducirIntro();
+// Si se llega desde una notificación o un recordatorio (?abrir=5), se va directo a la puerta.
+const diaAlEntrar = Number(new URLSearchParams(location.search).get('abrir')) || 0;
+const introTerminada = reproducirIntro({
+  omitir: diaAlEntrar > 0,
+  conVoz: () => leerPreferencia('noches-terror:sonido', 'bosque') !== 'no',
+});
 
 const DIAS = self.DIAS;
 
@@ -142,14 +147,18 @@ function crearPuerta(d) {
   boton.type = 'button';
   boton.className = `puerta puerta--${d.tema}`;
   boton.dataset.dia = d.dia;
+  boton.innerHTML = contenidoPuerta(d);
+  item.append(boton);
+  return item;
+}
+
+function contenidoPuerta(d) {
   const candado = `<span class="puerta__candado">${ICONOS.candado}</span>`;
   const hojas = d.tema === 'final'
     ? hojaHTML('puerta__hoja--izq', `<span class="puerta__icono">${ICONOS.final}</span><span class="puerta__numero">31</span>`)
       + hojaHTML('puerta__hoja--der', `<span class="puerta__rotulo">Noche de Halloween</span>${candado}`)
     : hojaHTML('', `<span class="puerta__icono">${ICONOS[d.tema]}</span><span class="puerta__numero">${d.dia}</span>${candado}`);
-  boton.innerHTML = `<span class="puerta__interior"></span>${hojas}`;
-  item.append(boton);
-  return item;
+  return `<span class="puerta__interior"></span>${hojas}`;
 }
 
 function etiqueta(dia, bloqueada, abierta) {
@@ -577,9 +586,45 @@ function abrirDesdeEnlace(dia) {
     avisarBloqueada(boton, dia);
     return;
   }
-  boton.scrollIntoView({ block: 'center' });
   if (abiertas.has(dia)) mostrarPanel(dia);
-  else abrirPuerta(boton, dia);
+  else abrirEmergente(dia);
+}
+
+// La puerta del día aparece grande en el centro, se abre sola y muestra la actividad.
+const emergente = document.getElementById('emergente');
+
+async function abrirEmergente(dia) {
+  if (abriendo) return;
+  abriendo = true;
+  const d = DIAS[dia - 1];
+  const completos = efectosCompletos();
+  emergente.innerHTML = `<div class="emergente__marco${d.tema === 'final' ? ' emergente__marco--final' : ''}">`
+    + `<div class="puerta puerta--${d.tema} puerta--disponible">${contenidoPuerta(d)}</div></div>`
+    + `<p class="emergente__texto">¡Noche ${dia}!</p>`;
+  const puerta = emergente.querySelector('.puerta');
+  puerta.querySelector('.puerta__interior').innerHTML = arte(d.tema);
+  emergente.hidden = false;
+  await esperar(completos ? 1100 : 500);
+  if (completos) {
+    puerta.classList.add('puerta--abriendo');
+    await esperar(450);
+    puerta.classList.remove('puerta--abriendo');
+    relampago.classList.remove('relampago--activo');
+    void relampago.offsetWidth;
+    relampago.classList.add('relampago--activo');
+  }
+  puerta.classList.remove('puerta--disponible');
+  puerta.classList.add('puerta--abierta');
+  abiertas.add(dia);
+  guardarAbiertas();
+  actualizarPuertas();
+  actualizarCabecera();
+  await esperar(completos ? 900 : 700);
+  if (completos) await revelar(d.tema);
+  mostrarPanel(dia);
+  emergente.hidden = true;
+  emergente.replaceChildren();
+  abriendo = false;
 }
 
 navigator.serviceWorker?.addEventListener('message', (evento) => {
@@ -594,7 +639,7 @@ document.getElementById('anio').textContent = ANIO;
 actualizarPuertas();
 actualizarCabecera();
 setInterval(cadaSegundo, 1000);
-sincronizarHora().then(() => {
+const horaLista = sincronizarHora().then(() => {
   ultimasDisponibles = puertasDisponibles();
   actualizarPuertas();
   actualizarCabecera();
@@ -607,5 +652,5 @@ if (diaEnlace) {
   parametros.delete('abrir');
   const resto = parametros.toString();
   history.replaceState(null, '', location.pathname + (resto ? `?${resto}` : ''));
-  introTerminada.then(() => setTimeout(() => abrirDesdeEnlace(diaEnlace), 400));
+  Promise.all([introTerminada, horaLista]).then(() => setTimeout(() => abrirDesdeEnlace(diaEnlace), 300));
 }

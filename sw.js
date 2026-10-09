@@ -2,7 +2,7 @@
 // los avisos diarios aunque la página esté cerrada.
 importScripts('js/dias.js');
 
-const VERSION = 'noches-terror-v6';
+const VERSION = 'noches-terror-v7';
 const CACHE_ESTADO = 'noches-terror-estado';
 const ARCHIVOS = [
   './',
