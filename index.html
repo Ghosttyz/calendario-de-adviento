@@ -152,6 +152,7 @@
     <div class="cabecera__acciones">
       <button class="boton" id="boton-hoy" type="button">🎃 Ir a hoy</button>
       <button class="boton boton--avisos" id="boton-avisos" type="button">🔔 Avisos diarios</button>
+      <button class="boton boton--secundario" id="boton-sonido" type="button">🔊 Sonido</button>
       <button class="boton boton--secundario" id="boton-efectos" type="button" aria-pressed="true">✨ Efectos: completos</button>
       <button class="boton boton--secundario" id="boton-instalar" type="button" hidden>📲 Instalar app</button>
     </div>
@@ -200,6 +201,17 @@
       <p>Funcionan en cualquier celular, tablet o computador, aunque el calendario esté cerrado: se agregan 31 recordatorios, uno por noche.</p>
       <label class="avisos__hora">Hora del aviso <input type="time" id="avisos-hora" value="08:00"></label>
       <button class="boton" id="avisos-ics" type="button">Descargar recordatorios (.ics)</button>
+    </section>
+  </dialog>
+
+  <dialog class="panel panel--avisos" id="panel-sonido" aria-labelledby="sonido-titulo">
+    <button class="panel__cerrar" type="button" data-cerrar aria-label="Cerrar">✕</button>
+    <h2 class="panel__titulo" id="sonido-titulo">Sonido de fondo</h2>
+    <p class="avisos__intro">Ambientes suaves y sin música. Toca uno para escucharlo; el que dejes elegido sonará cada vez que entres.</p>
+    <div class="sonidos" id="sonidos"></div>
+    <section class="avisos__opcion">
+      <label class="avisos__hora">Volumen <input type="range" id="sonido-volumen" min="5" max="100" step="5" value="40"></label>
+      <p class="avisos__nota">En iPhone, si el celular está en modo silencio, no se escucha.</p>
     </section>
   </dialog>
 

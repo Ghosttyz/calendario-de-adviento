@@ -2,7 +2,7 @@
 // los avisos diarios aunque la página esté cerrada.
 importScripts('js/dias.js');
 
-const VERSION = 'noches-terror-v5';
+const VERSION = 'noches-terror-v6';
 const CACHE_ESTADO = 'noches-terror-estado';
 const ARCHIVOS = [
   './',
@@ -16,6 +16,7 @@ const ARCHIVOS = [
   'js/avisos.js',
   'js/intro.js',
   'js/instalar.js',
+  'js/sonido.js',
   'js/personajes.js',
   'manifest.webmanifest',
   'iconos/favicon.svg',

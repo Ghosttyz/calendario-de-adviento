@@ -8,6 +8,7 @@
 - La puerta de cada noche se desbloquea a la medianoche de ese día de octubre (según la hora del dispositivo). Las anteriores se pueden releer y las futuras están cerradas con candado.
 - Al abrir una puerta cae un relámpago, la puerta se abre, aparece el personaje y luego se abre un panel con el escrito, un dato curioso y un reto.
 - Las puertas abiertas se guardan en cada dispositivo.
+- El botón **🔊 Sonido** elige el ambiente de fondo: bosque de noche (por defecto), viento, mansión embrujada, tormenta lejana o sin sonido. Son sonidos suaves, sin música, generados en el navegador (`js/sonido.js`), y empiezan con el primer toque en la pantalla.
 - El botón **✨ Efectos** alterna entre efectos completos y suaves (sin destellos ni sustos a pantalla completa). Si el sistema tiene las animaciones desactivadas, empieza en suaves.
 
 ## Avisos diarios

@@ -2,6 +2,7 @@ import { arte, ICONOS, murcielagoSVG } from './personajes.js';
 import * as avisos from './avisos.js';
 import { reproducirIntro } from './intro.js';
 import { prepararInstalacion } from './instalar.js';
+import * as sonido from './sonido.js';
 
 const introTerminada = reproducirIntro();
 
@@ -498,6 +499,75 @@ botonEfectos.addEventListener('click', () => {
 });
 
 pintarBotonEfectos();
+
+// ---------- Sonido de fondo ----------
+// El ambiente elegido (por defecto, el bosque) empieza con el primer toque:
+// los navegadores no dejan sonar nada antes de que la persona interactúe.
+
+const CLAVE_SONIDO = 'noches-terror:sonido';
+const CLAVE_VOLUMEN = 'noches-terror:volumen';
+const panelSonido = document.getElementById('panel-sonido');
+const botonSonido = document.getElementById('boton-sonido');
+const listaSonidos = document.getElementById('sonidos');
+const volumenSonido = document.getElementById('sonido-volumen');
+
+function leerPreferencia(clave, porDefecto) {
+  try {
+    return localStorage.getItem(clave) ?? porDefecto;
+  } catch {
+    return porDefecto;
+  }
+}
+
+function guardarPreferencia(clave, valor) {
+  try {
+    localStorage.setItem(clave, valor);
+  } catch {
+    // Vale solo para esta visita.
+  }
+}
+
+let ambienteElegido = leerPreferencia(CLAVE_SONIDO, 'bosque');
+volumenSonido.value = leerPreferencia(CLAVE_VOLUMEN, '40');
+sonido.fijarVolumen(Number(volumenSonido.value) / 100);
+
+listaSonidos.innerHTML = [...Object.entries(sonido.AMBIENTES), ['no', { nombre: '🔇 Sin sonido', descripcion: 'Silencio total… o casi.' }]]
+  .map(([clave, a]) => `<button class="sonido" type="button" data-ambiente="${clave}" aria-pressed="false"><strong>${a.nombre}</strong><span>${a.descripcion}</span></button>`)
+  .join('');
+
+function pintarSonido() {
+  for (const boton of listaSonidos.querySelectorAll('.sonido')) {
+    boton.setAttribute('aria-pressed', String(boton.dataset.ambiente === ambienteElegido));
+  }
+  botonSonido.textContent = ambienteElegido === 'no' ? '🔇 Sonido' : '🔊 Sonido';
+}
+
+listaSonidos.addEventListener('click', (evento) => {
+  const boton = evento.target.closest('.sonido');
+  if (!boton) return;
+  ambienteElegido = boton.dataset.ambiente;
+  guardarPreferencia(CLAVE_SONIDO, ambienteElegido);
+  if (ambienteElegido === 'no') sonido.detener();
+  else sonido.reproducir(ambienteElegido);
+  pintarSonido();
+});
+
+volumenSonido.addEventListener('input', () => {
+  sonido.fijarVolumen(Number(volumenSonido.value) / 100);
+  guardarPreferencia(CLAVE_VOLUMEN, volumenSonido.value);
+});
+
+botonSonido.addEventListener('click', () => panelSonido.showModal());
+
+function sonarAlPrimerToque() {
+  removeEventListener('pointerdown', sonarAlPrimerToque);
+  removeEventListener('keydown', sonarAlPrimerToque);
+  if (ambienteElegido !== 'no' && !sonido.sonando()) sonido.reproducir(ambienteElegido);
+}
+
+addEventListener('pointerdown', sonarAlPrimerToque);
+addEventListener('keydown', sonarAlPrimerToque);
+pintarSonido();
 
 // Enlaces directos (?abrir=5) desde notificaciones y recordatorios.
 function abrirDesdeEnlace(dia) {
