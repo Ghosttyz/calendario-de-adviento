@@ -2,7 +2,7 @@
 // los avisos diarios aunque la página esté cerrada.
 importScripts('js/dias.js');
 
-const VERSION = 'noches-terror-v8';
+const VERSION = 'noches-terror-v9';
 const CACHE_ESTADO = 'noches-terror-estado';
 const ARCHIVOS = [
   './',
@@ -26,7 +26,8 @@ const ARCHIVOS = [
 ];
 
 self.addEventListener('install', (evento) => {
-  evento.waitUntil(caches.open(VERSION).then((cache) => cache.addAll(ARCHIVOS)).then(() => self.skipWaiting()));
+  const frescos = ARCHIVOS.map((archivo) => new Request(archivo, { cache: 'no-cache' }));
+  evento.waitUntil(caches.open(VERSION).then((cache) => cache.addAll(frescos)).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (evento) => {
@@ -55,7 +56,9 @@ self.addEventListener('fetch', (evento) => {
 
   if (url.origin !== self.location.origin) return;
 
-  evento.respondWith(fetch(request).then((respuesta) => {
+  // cache: 'no-cache' pregunta siempre al servidor si el archivo cambió: así nunca se mezclan
+  // archivos de una versión vieja con otros de la nueva.
+  evento.respondWith(fetch(request, { cache: 'no-cache' }).then((respuesta) => {
     if (respuesta.ok) {
       const copia = respuesta.clone();
       const clave = request.mode === 'navigate' ? 'index.html' : request;
