@@ -203,6 +203,73 @@ const CONSTRUIR = {
   },
 };
 
+// ---------- Sonido misterioso de la entrada (unos 7 segundos) ----------
+
+let introActual = null;
+
+export function sonarIntro() {
+  contexto();
+  ctx.resume();
+  const amb = nuevoAmbiente();
+  const t = ctx.currentTime;
+
+  // Zumbido grave que va creciendo.
+  const grave = filtro('lowpass', 180);
+  const gGrave = ctx.createGain();
+  gGrave.gain.setValueAtTime(0.0001, t);
+  gGrave.gain.exponentialRampToValueAtTime(0.35, t + 5.5);
+  gGrave.gain.linearRampToValueAtTime(0, t + 6.9);
+  grave.connect(gGrave).connect(amb.bus);
+  [49, 49.4, 73.6].forEach((frecuencia) => {
+    const o = ctx.createOscillator();
+    o.type = 'triangle';
+    o.frequency.value = frecuencia;
+    o.connect(grave);
+    o.start(t);
+    o.stop(t + 7);
+  });
+
+  // Brillo agudo e inquietante cuando se enciende la calabaza.
+  [1244, 1318, 1867].forEach((frecuencia, i) => {
+    const o = ctx.createOscillator();
+    o.frequency.setValueAtTime(frecuencia, t + 2.4);
+    o.frequency.linearRampToValueAtTime(frecuencia * 0.97, t + 5.6);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t + 2.4);
+    g.gain.linearRampToValueAtTime(0.018, t + 3.2 + i * 0.2);
+    g.gain.linearRampToValueAtTime(0, t + 5.6);
+    o.connect(g).connect(amb.bus);
+    o.start(t + 2.4);
+    o.stop(t + 5.7);
+  });
+
+  // Crujido de la puerta al abrirse.
+  amb.temporizadores.push(setTimeout(() => crujido(amb, 1.3), 5000));
+
+  // Soplo que sube cuando la cámara entra hacia la luz.
+  const soplo = ctx.createBufferSource();
+  soplo.buffer = bufferRuido;
+  const banda = filtro('bandpass', 300, 1.2);
+  banda.frequency.setValueAtTime(300, t + 5.6);
+  banda.frequency.exponentialRampToValueAtTime(3200, t + 6.5);
+  const gSoplo = ctx.createGain();
+  gSoplo.gain.setValueAtTime(0, t + 5.6);
+  gSoplo.gain.linearRampToValueAtTime(0.4, t + 6.3);
+  gSoplo.gain.linearRampToValueAtTime(0, t + 6.9);
+  soplo.connect(banda).connect(gSoplo).connect(amb.bus);
+  soplo.start(t + 5.6);
+  soplo.stop(t + 7);
+
+  introActual = amb;
+  amb.temporizadores.push(setTimeout(() => detenerIntro(), 7400));
+}
+
+export function detenerIntro() {
+  if (!introActual) return;
+  apagar(introActual);
+  introActual = null;
+}
+
 // ---------- Control ----------
 
 function apagar(amb) {

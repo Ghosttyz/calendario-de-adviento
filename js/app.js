@@ -8,7 +8,10 @@ import * as sonido from './sonido.js';
 const diaAlEntrar = Number(new URLSearchParams(location.search).get('abrir')) || 0;
 const introTerminada = reproducirIntro({
   omitir: diaAlEntrar > 0,
-  conVoz: () => leerPreferencia('noches-terror:sonido', 'bosque') !== 'no',
+  alEmpezar: () => {
+    if (leerPreferencia('noches-terror:sonido', 'bosque') !== 'no') sonido.sonarIntro();
+  },
+  alSaltar: () => sonido.detenerIntro(),
 });
 
 const DIAS = self.DIAS;

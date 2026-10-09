@@ -1,7 +1,7 @@
 // Animación de entrada (ver css/intro.css). Devuelve una promesa que se
 // cumple cuando la entrada termina o la persona la salta.
 // La escena espera un toque («Toca para entrar») porque los celulares
-// no dejan sonar la voz del narrador ni el sonido sin una interacción.
+// no dejan reproducir sonido sin una interacción.
 import { murcielagoSVG } from './personajes.js';
 
 // Solo en localhost, para probar: ?intro=no la omite y ?intro=2500 congela la escena en ese milisegundo.
@@ -11,23 +11,7 @@ const parametro = esLocal ? new URLSearchParams(location.search).get('intro') : 
 const VUELOS = [[-260, -220], [-120, -300], [40, -330], [200, -260], [310, -140], [-330, -90], [150, -390]];
 const DURACION = 6600;
 
-function narrar(lineas) {
-  if (!('speechSynthesis' in window)) return;
-  const voces = speechSynthesis.getVoices();
-  const voz = voces.find((v) => /^es[-_](MX|US|419|CO)/i.test(v.lang)) || voces.find((v) => /^es/i.test(v.lang));
-  if (voces.length && !voz) return; // el dispositivo no tiene voz en español
-  speechSynthesis.cancel();
-  for (const texto of lineas) {
-    const frase = new SpeechSynthesisUtterance(texto);
-    frase.lang = voz?.lang || 'es-MX';
-    if (voz) frase.voice = voz;
-    frase.rate = 0.85;
-    frase.pitch = 0.6; // voz grave de narrador de cuento de miedo
-    speechSynthesis.speak(frase);
-  }
-}
-
-export function reproducirIntro({ omitir = false, conVoz = () => true } = {}) {
+export function reproducirIntro({ omitir = false, alEmpezar = () => {}, alSaltar = () => {} } = {}) {
   const intro = document.getElementById('intro');
   if (!intro) return Promise.resolve();
   if (omitir || parametro === 'no') {
@@ -64,7 +48,7 @@ export function reproducirIntro({ omitir = false, conVoz = () => true } = {}) {
       terminada = true;
       clearTimeout(temporizador);
       removeEventListener('keydown', alTeclear);
-      if (rapido && 'speechSynthesis' in window) speechSynthesis.cancel();
+      if (rapido) alSaltar();
       intro.classList.add('intro--saliendo');
       if (rapido) intro.classList.add('intro--rapido');
       document.body.classList.remove('con-intro');
@@ -80,9 +64,7 @@ export function reproducirIntro({ omitir = false, conVoz = () => true } = {}) {
     function empezar() {
       if (intro.classList.contains('intro--activa')) return;
       intro.classList.add('intro--activa');
-      if (conVoz()) {
-        narrar([...intro.querySelectorAll('.intro__texto')].map((p) => p.textContent.replace(/…/g, '')));
-      }
+      alEmpezar();
       temporizador = setTimeout(() => terminar(false), DURACION);
     }
 
