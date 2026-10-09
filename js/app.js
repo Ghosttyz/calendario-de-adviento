@@ -489,6 +489,14 @@ document.getElementById('boton-hoy').addEventListener('click', () => {
   if (disponibles === 0) mostrarAvisoFlotante('🕯️ Octubre todavía no empieza. ¡Paciencia!');
 });
 
+// Panel lateral de opciones: al elegir una opción se cierra antes de abrir su ventana.
+const lateral = document.getElementById('lateral');
+document.getElementById('boton-menu').addEventListener('click', () => lateral.showModal());
+lateral.addEventListener('click', (evento) => {
+  const opcion = evento.target.closest('#boton-avisos, #boton-sonido, #boton-instalar');
+  if (opcion) lateral.close();
+}, true);
+
 const botonEfectos = document.getElementById('boton-efectos');
 
 function pintarBotonEfectos() {

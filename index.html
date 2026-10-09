@@ -152,12 +152,21 @@
     <p class="cabecera__cuenta" id="cuenta-regresiva"></p>
     <div class="cabecera__acciones">
       <button class="boton" id="boton-hoy" type="button">🎃 Ir a hoy</button>
-      <button class="boton boton--avisos" id="boton-avisos" type="button">🔔 Avisos diarios</button>
-      <button class="boton boton--secundario" id="boton-sonido" type="button">🔊 Sonido</button>
-      <button class="boton boton--secundario" id="boton-efectos" type="button" aria-pressed="true">✨ Efectos: completos</button>
-      <button class="boton boton--secundario" id="boton-instalar" type="button" hidden>📲 Instalar app</button>
     </div>
   </header>
+
+  <button class="menu-boton" id="boton-menu" type="button" aria-label="Opciones" aria-haspopup="dialog">☰</button>
+
+  <dialog class="lateral" id="lateral" aria-labelledby="lateral-titulo">
+    <div class="lateral__cabecera">
+      <h2 class="lateral__titulo" id="lateral-titulo">Opciones</h2>
+      <button class="panel__cerrar lateral__cerrar" type="button" data-cerrar aria-label="Cerrar">✕</button>
+    </div>
+    <button class="lateral__opcion" id="boton-avisos" type="button">🔔 Avisos diarios</button>
+    <button class="lateral__opcion" id="boton-sonido" type="button">🔊 Sonido</button>
+    <button class="lateral__opcion" id="boton-efectos" type="button" aria-pressed="true">✨ Efectos: completos</button>
+    <button class="lateral__opcion" id="boton-instalar" type="button" hidden>📲 Instalar app</button>
+  </dialog>
 
   <main class="contenedor">
     <ol class="calendario" id="calendario" aria-label="Puertas de octubre"></ol>
